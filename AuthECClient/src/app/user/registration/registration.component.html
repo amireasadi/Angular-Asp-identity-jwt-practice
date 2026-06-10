@@ -2,19 +2,26 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" >
   <div class="mb-3">
     <label for="full-name" class="form-label">نام و نام خانوادگی</label>
-    <input formControlName="fullName" type="text" class="form-control bg-body-secondary" id="full-name" >
+    <input formControlName="fullName" type="text" class="form-control bg-body-secondary" id="full-name" [class.is-invalid]="isInvalid('fullName')">
+    <div class="invalid-feedback" *ngIf="getControl('fullName')?.hasError('required')">این فیلد الزامی است.</div>
   </div>
   <div class="mb-3">
     <label for="email" class="form-label">ایمیل</label>
-    <input formControlName="email" type="email" class="form-control bg-body-secondary" id="email" >
+    <input formControlName="email" type="email" class="form-control bg-body-secondary" id="email" [class.is-invalid]="isInvalid('email')">
+    <div class="invalid-feedback" *ngIf="getControl('email')?.hasError('required')">این فیلد الزامی است.</div>
+    <div class="invalid-feedback" *ngIf="getControl('email')?.hasError('email')">این فرمت ایمیل درست نمیباشد!</div>
   </div>
   <div class="mb-3">
     <label for="password" class="form-label">رمز</label>
-    <input  formControlName="password" type="password" class="form-control bg-body-secondary" id="password">
+    <input  formControlName="password" type="password" class="form-control bg-body-secondary" id="password" [class.is-invalid]="isInvalid('password')">
+    <div class="invalid-feedback" *ngIf="getControl('password')?.hasError('required')">این فیلد الزامی است.</div>
+    <div class="invalid-feedback" *ngIf="getControl('password')?.hasError('minlength')">حدداقل ۶ کاراکتر</div>
+    <div class="invalid-feedback" *ngIf="getControl('password')?.hasError('pattern')">حداقل یک کاراکتر خاص مانند $, #, % و ...</div>
   </div>
   <div class="mb-3">
     <label  for="confirm-password" class="form-label">تکرار رمز</label>
-    <input formControlName="confirmPassword" type="password" class="form-control bg-body-secondary" id="confirm-password">
+    <input formControlName="confirmPassword" type="password" class="form-control bg-body-secondary" id="confirm-password" [class.is-invalid]="isInvalid('confirmPassword')">
+    <div class="invalid-feedback" *ngIf="getControl('confirmPassword')?.hasError('passwordMismatch')">رمز عبور یکی نمیاشد!</div>
   </div>
   <button type="submit" class="btn btn-success w-100 rounded-3 mt-4">ارسال</button>
 </form>

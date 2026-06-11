@@ -3,9 +3,10 @@ import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidatorF
 import {CommonModule} from "@angular/common";
 import {AuthService} from "../../shared/services/auth.service";
 import {ToastrService} from "ngx-toastr";
+import {RouterLink} from "@angular/router";
 
 @Component({
-  selector: 'app-registration', standalone: true, imports: [ReactiveFormsModule, CommonModule],
+  selector: 'app-registration', standalone: true, imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './registration.component.html',
   styles: ``
 })

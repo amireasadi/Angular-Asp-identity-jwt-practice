@@ -1,1 +1,25 @@
-<p>login works!</p>
+<div class="mb-4 ">
+  <h2 class="text-success">
+    ورود
+  </h2>
+</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <label for="email" class="form-label">ایمیل</label>
+    <input formControlName="email" type="email" class="form-control bg-body-secondary" id="email"
+           [class.is-invalid]="isInvalid('email')">
+    <div class="invalid-feedback" *ngIf="getControl('email')?.hasError('required')">این فیلد الزامی است.</div>
+    <div class="invalid-feedback" *ngIf="getControl('email')?.hasError('email')">این فرمت ایمیل درست نمیباشد!</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="password" class="form-label">رمز</label>
+    <input formControlName="password" type="password" class="form-control bg-body-secondary" id="password"
+           [class.is-invalid]="isInvalid('password')">
+    <div class="invalid-feedback" *ngIf="getControl('password')?.hasError('required')">این فیلد الزامی است.</div>
+  </div>
+  <button type="submit" class="btn btn-success w-100 rounded-3 my-4">ورود</button>
+  <div>
+    حساب کاربری ندارید؟ <a routerLink="/signup" class="text-decoration-none fw-medium text-success d-inline-block">ساختن حساب کاربری</a>
+  </div>
+</form>

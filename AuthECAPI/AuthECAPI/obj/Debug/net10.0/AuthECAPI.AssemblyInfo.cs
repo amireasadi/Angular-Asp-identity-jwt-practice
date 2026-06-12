@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AuthECAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+43c5274c4e356c50896c10dff7cc95818f87342c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+76640eb9a8501ee58249532d1e40c4c4e5b20c1d")]
 [assembly: System.Reflection.AssemblyProductAttribute("AuthECAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AuthECAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

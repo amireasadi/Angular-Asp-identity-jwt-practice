@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "../../shared/services/auth.service";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ import {RouterLink} from "@angular/router";
   styles: ``
 })
 export class LoginComponent {
-  constructor(private http : HttpClient, private service : AuthService) {
+  constructor(private http: HttpClient, private service: AuthService, private toastr: ToastrService, private  router : Router) {
   }
 
   form = new FormGroup({
@@ -29,7 +30,25 @@ export class LoginComponent {
     const control = this.getControl(name);
     return !!(control?.invalid && control?.touched );
   }
+
   onSubmit(){
-    console.log(this.form.value)
+    if (this.form.valid) {
+      this.service.signin(this.form.value).subscribe({
+        next: (res: any) => {
+            localStorage.setItem('token', res.token);
+            this.form.reset();
+            this.toastr.success("ورود به حساب کاربری با موفقیت انجام شد.");
+            this.router.navigateByUrl('/dashboard');
+        }, error: (err) => {
+          if(err.status == '400')
+            this.toastr.error("نام کاربری یا رمز اشتباه است.");
+          else
+            this.toastr.error("ورود به حساب کاربری با خطا مواجه شد!");
+          console.error(err)
+        }
+      });
+    } else {
+      this.toastr.warning("لطفا تمام اطلاعات را وارد کنید.");
+    }
   }
 }

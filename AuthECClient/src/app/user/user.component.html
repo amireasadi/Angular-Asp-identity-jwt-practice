@@ -6,7 +6,7 @@
           <img [priority]="true" ngSrc="../../assets/authec-logo.png" height="298" width="229" class="w-50 h-50 object-fit-contain" alt="logo" >
         </div>
         <div class="col-md-7">
-          <div class="p-md-5 p-4 w-100">
+          <div class="p-md-5 p-4 w-100" [@routerFadeIn]="getRouteUrl()">
             <router-outlet />
           </div>
         </div>

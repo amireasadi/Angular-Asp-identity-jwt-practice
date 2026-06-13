@@ -1,11 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AuthECAPI.Extensions;
 using AuthECAPI.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,32 +14,12 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-// Services for Identity
-builder.Services.AddIdentityApiEndpoints<AppUser>()
-  .AddEntityFrameworkStores<AppDbContext>();
-builder.Services.Configure<IdentityOptions>(options =>
-{
-  options.Password.RequireDigit = false;
-  options.Password.RequireLowercase = false;
-  options.Password.RequireUppercase = false;
-  options.User.RequireUniqueEmail = true;
-});
-builder.Services.AddDbContext<AppDbContext>(options =>
-  options.UseSqlServer(builder.Configuration.GetConnectionString("DevDB")));
-builder.Services.AddAuthentication(x =>
-  {
-    x.DefaultAuthenticateScheme = x.DefaultChallengeScheme = x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-  })
-  .AddJwtBearer(y =>
-  {
-    y.SaveToken = false;
-    y.TokenValidationParameters = new TokenValidationParameters()
-    {
-      ValidateIssuerSigningKey = true,
-      IssuerSigningKey =
-        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:JWTSecret"]!))
-    };
-  });
+builder.Services
+  .InjectDbContext(builder.Configuration)
+  .AddIdentityHandlersAndStores()
+  .ConfigureIdentityOptions()
+  .AddIdentityAuth(builder.Configuration);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -50,11 +29,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors(options => options.WithOrigins("http://localhost:4200")
-  .AllowAnyHeader()
-  .AllowAnyMethod());
-app.UseAuthentication();
-app.UseAuthorization();
+app.ConfigCors();
+app.AddIdentityAuthMiddlewares();
 app.MapControllers();
 app.MapGroup("/api")
   .MapIdentityApi<AppUser>();

@@ -1,17 +1,21 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {AuthService} from "../../shared/services/auth.service";
 import {ToastrService} from "ngx-toastr";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-registration', standalone: true, imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './registration.component.html',
   styles: ``
 })
-export class RegistrationComponent {
-  constructor(private service: AuthService, private toastr: ToastrService) {
+export class RegistrationComponent implements OnInit{
+  constructor(private service: AuthService, private toastr: ToastrService, private router: Router) {}
+
+  ngOnInit(): void {
+    if(this.service.isLoggedIn())
+      this.router.navigateByUrl('dashboard');
   }
 
   passwordMatchValidator: ValidatorFn = (control: AbstractControl): null => {

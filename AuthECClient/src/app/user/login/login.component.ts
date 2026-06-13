@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
@@ -13,8 +13,13 @@ import {ToastrService} from "ngx-toastr";
   templateUrl: './login.component.html',
   styles: ``
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   constructor(private http: HttpClient, private service: AuthService, private toastr: ToastrService, private  router : Router) {
+  }
+
+  ngOnInit(): void {
+    if(this.service.isLoggedIn())
+      this.router.navigateByUrl('dashboard');
   }
 
   form = new FormGroup({
@@ -35,7 +40,7 @@ export class LoginComponent {
     if (this.form.valid) {
       this.service.signin(this.form.value).subscribe({
         next: (res: any) => {
-            localStorage.setItem('token', res.token);
+            this.service.setToken(res.token);
             this.form.reset();
             this.toastr.success("ورود به حساب کاربری با موفقیت انجام شد.");
             this.router.navigateByUrl('/dashboard');

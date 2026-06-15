@@ -12,7 +12,6 @@ export class UserService {
 
   getUserProfile()
   {
-    const reqHeader = new HttpHeaders({'Authorization': `Bearer ${this.authService.getToken()}`})
-    return this.http.get(environment.baseUrl + '/userprofile', {headers: reqHeader});
+    return this.http.get(environment.baseUrl + '/userprofile');
   }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using AuthECAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
@@ -43,9 +44,15 @@ public static class IdentityExtensions
         {
           ValidateIssuerSigningKey = true,
           IssuerSigningKey =
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["AppSettings:JWTSecret"]!))
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["AppSettings:JWTSecret"]!)),
+          ValidateIssuer = false,
+          ValidateAudience = false,
         };
       });
+    services.AddAuthorization(options => options.FallbackPolicy = new AuthorizationPolicyBuilder()
+      .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+      .RequireAuthenticatedUser()
+      .Build());
     return services;
   }
 

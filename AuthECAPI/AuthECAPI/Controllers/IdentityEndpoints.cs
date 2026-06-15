@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using AuthECAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -14,7 +15,7 @@ public static class IdentityEndpoints
   public static IEndpointRouteBuilder MapIdentityUserEndpoints(this IEndpointRouteBuilder app)
   {
     app.MapPost("/signup",
-      async (UserManager<AppUser> userManager,
+      [AllowAnonymous] async (UserManager<AppUser> userManager,
         [FromBody] UserRegistrationModel userRegistrationModel) =>
       {
         AppUser user = new()
@@ -32,7 +33,7 @@ public static class IdentityEndpoints
       });
 
     app.MapPost("/signin",
-      async (UserManager<AppUser> userManager,
+      [AllowAnonymous] async (UserManager<AppUser> userManager,
         [FromBody] LoginModel loginModel,
         IOptions<AppSettings> AppSettings) =>
       {

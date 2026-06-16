@@ -29,6 +29,9 @@ export class RegistrationComponent implements OnInit{
 
   form = new FormGroup({
     fullName: new FormControl('', Validators.required),
+    gender: new FormControl('Male', Validators.required),
+    age: new FormControl('', [Validators.required, Validators.min(18), Validators.max(100)]),
+    role: new FormControl('Student', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/)]),
     confirmPassword: new FormControl(''),

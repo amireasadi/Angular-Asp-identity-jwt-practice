@@ -1,0 +1,15 @@
+﻿POST http://localhost:5216/api/signup
+Content-Type: application/json
+#Authorization: Bearer {{token}}
+
+
+  {
+
+  "email": "teacher2_m_age40@gmail.com",
+  "password": "teacher2_m_age40",
+  "fullName": "Teacher 2",
+  "role": "Teacher",
+  "gender": "Male",
+  "libraryId": 23234
+
+  }

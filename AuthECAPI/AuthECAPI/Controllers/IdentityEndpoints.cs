@@ -22,10 +22,14 @@ public static class IdentityEndpoints
         {
           Email = userRegistrationModel.Email,
           FullName = userRegistrationModel.FullName,
-          UserName = userRegistrationModel.Email
+          UserName = userRegistrationModel.Email,
+          Gender = userRegistrationModel.Gender,
+          LibraryId = userRegistrationModel.LibraryId,
+          DOB= DateOnly.FromDateTime(DateTime.Now.AddYears(-userRegistrationModel.Age)),
         };
         var result = await userManager.CreateAsync(user,
           userRegistrationModel.Password);
+        await userManager.AddToRoleAsync(user, userRegistrationModel.Role);
         if (result.Succeeded)
           return Results.Ok(result);
         else

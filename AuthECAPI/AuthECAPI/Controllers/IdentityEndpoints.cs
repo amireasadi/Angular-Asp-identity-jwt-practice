@@ -14,9 +14,8 @@ public static class IdentityEndpoints
 {
   public static IEndpointRouteBuilder MapIdentityUserEndpoints(this IEndpointRouteBuilder app)
   {
-    app.MapPost("/signup",
-      [AllowAnonymous] async (UserManager<AppUser> userManager,
-        [FromBody] UserRegistrationModel userRegistrationModel) =>
+    app.MapPost("/signup", [AllowAnonymous]
+      async (UserManager<AppUser> userManager, [FromBody] UserRegistrationModel userRegistrationModel) =>
       {
         AppUser user = new()
         {
@@ -25,58 +24,45 @@ public static class IdentityEndpoints
           UserName = userRegistrationModel.Email,
           Gender = userRegistrationModel.Gender,
           LibraryId = userRegistrationModel.LibraryId,
-          DOB= DateOnly.FromDateTime(DateTime.Now.AddYears(-userRegistrationModel.Age)),
+          DOB = DateOnly.FromDateTime(DateTime.Now.AddYears(-userRegistrationModel.Age)),
         };
-        var result = await userManager.CreateAsync(user,
-          userRegistrationModel.Password);
+        var result = await userManager.CreateAsync(user, userRegistrationModel.Password);
         await userManager.AddToRoleAsync(user, userRegistrationModel.Role);
         if (result.Succeeded)
           return Results.Ok(result);
-        else
-          return Results.BadRequest(result);
+        
+        return Results.BadRequest(result);
       });
-
-    app.MapPost("/signin",
-      [AllowAnonymous] async (UserManager<AppUser> userManager,
-        [FromBody] LoginModel loginModel,
-        IOptions<AppSettings> AppSettings) =>
+    
+    app.MapPost("/signin", [AllowAnonymous]
+      async (UserManager<AppUser> userManager, [FromBody] LoginModel loginModel, IOptions<AppSettings> AppSettings) =>
       {
         var user = await userManager.FindByEmailAsync(loginModel.Email);
-        if (user != null &&
-            await userManager.CheckPasswordAsync(user,
-              loginModel.Password))
+        if (user != null && await userManager.CheckPasswordAsync(user, loginModel.Password))
         {
+          var roles = await userManager.GetRolesAsync(user);
           var signInKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppSettings.Value.JWTSecret));
+          ClaimsIdentity claims = new ClaimsIdentity(new Claim[]
+          {
+            new Claim("UserId", user.Id), new Claim("Gender", user.Gender),
+            new Claim("DOB", (DateTime.Now.Year - user.DOB.Year).ToString()),
+            new Claim(ClaimTypes.Role, roles.First()),
+          });
+          if (user.LibraryId != null)
+            claims.AddClaim(new Claim("LibraryId", user.LibraryId.ToString()!));
           var tokenDescriptor = new SecurityTokenDescriptor
           {
-            Subject = new ClaimsIdentity(new Claim[]
-            {
-              new Claim("UserId",
-                user.Id.ToString())
-            }),
+            Subject = claims,
             Expires = DateTime.UtcNow.AddMinutes(10),
-            SigningCredentials = new SigningCredentials(
-              signInKey,
-              SecurityAlgorithms.HmacSha256Signature
-            )
+            SigningCredentials = new SigningCredentials(signInKey, SecurityAlgorithms.HmacSha256Signature)
           };
           var tokenHandler = new JwtSecurityTokenHandler();
           var securityToken = tokenHandler.CreateToken(tokenDescriptor);
           var token = tokenHandler.WriteToken(securityToken);
-          return Results.Ok(new
-          {
-            token
-          });
+          return Results.Ok(new { token });
         }
-        else
-        {
-          return Results.BadRequest(new
-          {
-            message = "Username or password is incorrect."
-          });
-        }
+        return Results.BadRequest(new { message = "Username or password is incorrect." });
       });
-
     return app;
   }
 }

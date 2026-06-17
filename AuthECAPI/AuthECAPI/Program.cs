@@ -1,12 +1,6 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using AuthECAPI.Controllers;
 using AuthECAPI.Extensions;
 using AuthECAPI.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,5 +31,5 @@ app.AddIdentityAuthMiddlewares();
 app.MapControllers();
 app.MapGroup("/api")
   .MapIdentityApi<AppUser>();
-app.MapGroup("/api").MapIdentityUserEndpoints();
+app.MapGroup("/api").MapIdentityUserEndpoints().MapAccountEndpoints().MapAuthorizationDemoEndpoint();
 app.Run();

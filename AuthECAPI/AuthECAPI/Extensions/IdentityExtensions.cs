@@ -50,10 +50,18 @@ public static class IdentityExtensions
           ValidateAudience = false,
         };
       });
-    services.AddAuthorization(options => options.FallbackPolicy = new AuthorizationPolicyBuilder()
-      .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-      .RequireAuthenticatedUser()
-      .Build());
+    services.AddAuthorization(options =>
+    {
+      options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser()
+        .Build();
+      options.AddPolicy("HasLibraryId", policy => policy.RequireClaim("LibraryId"));
+      options.AddPolicy("FemalesOnly", policy => policy.RequireClaim("Gender", "Female"));
+      options.AddPolicy("Under10",
+        policy => policy.RequireAssertion(context => Int32.Parse(context.User.Claims.First(x => x.Type == "Age").Value) < 10));
+    });
+    
     return services;
   }
 

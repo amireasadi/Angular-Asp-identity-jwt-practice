@@ -1,6 +1,33 @@
-@AuthECAPI_HostAddress = http://localhost:5216
+POST http://localhost:5216/api/signup
+Content-Type: application/json
 
-GET {{AuthECAPI_HostAddress}}/weatherforecast/
-Accept: application/json
+
+  {
+  "email": "teacher2_m_age40@gmail.com",
+  "password": "teacher2_m_age40",
+  "fullName": "Teacher 2",
+  "role": "Teacher",
+  "gender": "Male",
+  "libraryId": 23234
+  }
 
 ###
+
+#admin jwt
+GET http://localhost:5216/api/AdminOnly
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiJiNTdkYzkxYy1kMmU5LTQwZTQtODdhYi1lNDkyNDE3M2E1OTMiLCJHZW5kZXIiOiJNYWxlIiwiRE9CIjoiNTEiLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3ODE2ODU4ODksImV4cCI6MTc4MTY4NjQ4OSwiaWF0IjoxNzgxNjg1ODg5fQ.fNKQ1nxxlS4coH2c4zlIO37i2VBhQbaZZwGzFrVqkDQ
+
+###
+POST http://localhost:5216/api/signin
+Content-Type: application/json
+
+
+{
+  "email": "student4_f_age9@gmail.com",
+  "password": "student4_f_age9"
+}
+###
+
+#With token of someone with libraryId
+GET http://localhost:5216/api/LibraryMemberOnly
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiJkNzNlYjhjYi0yMzAxLTRhYjEtYWI3Ni00NWZiNzRmYmZlYjgiLCJHZW5kZXIiOiJGZW1hbGUiLCJET0IiOiI5Iiwicm9sZSI6IlN0dWRlbnQiLCJMaWJyYXJ5SWQiOiI1NTU0MzQiLCJuYmYiOjE3ODE2ODc4NzQsImV4cCI6MTc4MTY4ODQ3NCwiaWF0IjoxNzgxNjg3ODc0fQ.b-HCj33PuUL0BUVRPRFBYoqX2lbDolXR4dSJMototnM

@@ -21,7 +21,6 @@
   "password": "teacher2_m_age40",
   "fullName": "Teacher 2",
   "role": "Teacher",
-  "gender": "Male",
-  "libraryId": 23234
+  "gender": "Male"
   }
 ] 

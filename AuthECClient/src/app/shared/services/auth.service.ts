@@ -19,20 +19,23 @@ export class AuthService {
     return this.http.post(environment.baseUrl + '/signin', formData);
   }
 
-  isLoggedIn()
-  {
+  isLoggedIn() {
     return this.getToken() != null;
   }
 
-  deleteToken()
-  {
+  deleteToken() {
     localStorage.removeItem(TOKEN_KEY);
   }
-  setToken(token: string)
-  {
+
+  setToken(token: string) {
     localStorage.setItem(TOKEN_KEY, token);
   }
-  getToken(){
+
+  getToken() {
     return localStorage.getItem(TOKEN_KEY);
+  }
+
+  getClaims() {
+    return JSON.parse(window.atob(this.getToken()!.split('.')[1]));
   }
 }

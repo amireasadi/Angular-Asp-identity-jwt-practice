@@ -1,0 +1,40 @@
+<nav id="sidebar" class="navbar bg-body-tertiary vh-100 flex-column
+justify-content-start">
+  <div class="container-fluid justify-content-center p-1">
+    <a class="navbar-brand h1 fw-bold text-success mb-3" routerLink="/dashboard">
+      Auth EC
+    </a>
+  </div>
+  <ul class="nav flex-column w-100 px-3">
+    <li class="nav-item" [appHideIfClaimsNotMet]="ClaimReq.adminOnly">
+      <a class="nav-link" routerLink="/admin-only" >ادمین</a>
+    </li>
+    <li class="nav-item" [appHideIfClaimsNotMet]="ClaimReq.adminOrTeacher">
+      <a class="nav-link" routerLink="/admin-or-teacher">ادمین و استاد</a>
+    </li>
+    <li class="nav-item" [appHideIfClaimsNotMet]="ClaimReq.femaleAndTeacher">
+      <a class="nav-link" routerLink="/apply-for-maternity">مرخضی</a>
+    </li>
+    <li class="nav-item" [appHideIfClaimsNotMet]="ClaimReq.hasLibraryId">
+      <a class="nav-link" routerLink="/library-members-only">اعضای کتابخانه</a>
+    </li>
+    <li class="nav-item" [appHideIfClaimsNotMet]="ClaimReq.femaleAndUnder10">
+      <a class="nav-link" routerLink="Under10-female">مونث زیر ۱۰ سال</a>
+    </li>
+  </ul>
+</nav>
+<div id="main">
+  <nav class="navbar bg-body-tertiary">
+    <div class="container-fluid px-5 py-1">
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="جستجو"
+               aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">جستجو</button>
+      </form>
+      <button class="btn btn-dark" (click)="onLogout()">خروج از حساب کاربری</button>
+    </div>
+  </nav>
+  <div class="mt-5 p-5">
+    <router-outlet/>
+  </div>
+</div>

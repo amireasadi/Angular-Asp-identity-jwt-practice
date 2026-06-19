@@ -61,3 +61,26 @@ body {
 p, a, h1, h2, h3, h4, h5, h6, div, span, a {
   font-family: 'Vazirmatn', sans-serif;
 }
+
+#main {
+  margin-left: 240px;
+}
+
+#sidebar {
+  width: 240px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+#sidebar li.nav-item a {
+  color: #637381;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.7rem 1rem;
+}
+
+#sidebar li.nav-item:hover {
+  background-color: #007fff17;
+  border-radius: 0.5rem;
+}

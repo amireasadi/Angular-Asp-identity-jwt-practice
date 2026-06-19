@@ -1,5 +1,5 @@
 <div class="text-center">
   <h2> خوش اومدی {{fullName}} </h2>
-  <button class="btn btn-dark" (click)="onLogout()" >خروج از حساب کاربری</button>
+  <button class="btn btn-danger" [appHideIfClaimsNotMet]="ClaimReq.adminOnly">دکمه مهم ادمین!</button>
 </div>
 

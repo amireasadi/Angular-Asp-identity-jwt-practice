@@ -5,6 +5,8 @@ This project intended for learning and experimenting with authentication using A
 - Authenticate users with ASP.NET Core Identity
 - Generate and validate JWT access tokens
 - Consume protected API endpoints from an Angular application
+- 
+![ASP-Angular Authentication Preview](https://github.com/amireasadi/Angular-Asp-identity-jwt-practice/blob/main/AuthECClient/src/assets/asp-angular-auth-img-preview.jpeg?raw=true)
 
 ## Tech Stack
 
